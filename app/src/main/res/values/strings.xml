@@ -5,12 +5,11 @@
     <string name="main_activity_make_notes">Rób notatki</string>
     <string name="main_activity_welcome">Witaj</string>
     <string name="main_menu_about">O programie</string>
-    <string name="about_activity_app_name">Audiogram</string>
-    <string name="about_activity_description">Aplikacja do chatu i pisania notatek</string>
+    <string name="about_activity_app_name">AudioGram</string>
+    <string name="about_activity_description">Aplikacja do </string>
     <string name="about_activity_version">Wersja 1.1</string>
     <string name="about_activity_authors">Autorzy:</string>
-    <string name="author_rs">TS i ID</string>
-    <!-- TODO: Remove or change this placeholder text -->
+    <string name="author_rs">Tomasz Syrylo i Igor Domitrz</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>
