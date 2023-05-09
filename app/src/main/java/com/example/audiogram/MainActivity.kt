@@ -5,7 +5,7 @@ import android.os.Bundle
 import com.example.audiogram.databinding.ActivityMainBinding
 
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(R.layout.fragment_main) {
     private lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -14,9 +14,8 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
 
+
     }
-
-
 
 
 

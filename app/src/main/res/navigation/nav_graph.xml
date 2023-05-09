@@ -28,10 +28,17 @@
         android:label="Main fragment"
         tools:layout="@layout/fragment_main">
         <action
-            android:id="@+id/action_mainFragment_to_homeFragment"
-            app:destination="@id/homeFragment" />
-        <action
             android:id="@+id/action_mainFragment_to_calibrationFragment"
             app:destination="@id/calibrationFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/consentFragment"
+        android:name="com.example.audiogram.ConsentFragment"
+        android:label="fragment_consent"
+        tools:layout="@layout/fragment_consent" />
+    <fragment
+        android:id="@+id/calibrationYoungFragment"
+        android:name="com.example.audiogram.calibrationYoungFragment"
+        android:label="fragment_calibration_young"
+        tools:layout="@layout/fragment_calibration_young" />
 </navigation>
