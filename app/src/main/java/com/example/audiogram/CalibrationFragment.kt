@@ -1,59 +1,112 @@
 package com.example.audiogram
 
+import android.media.AudioAttributes
+import android.media.AudioFormat
+import android.media.AudioTrack
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import kotlin.math.sin
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [CalibrationFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class CalibrationFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
-    }
+    private lateinit var tone1: ShortArray
+    private lateinit var tone2: ShortArray
+    private var audioTrack: AudioTrack? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_calibration, container, false)
+        val view = inflater.inflate(R.layout.fragment_calibration, container, false)
+        val startButton: Button = view.findViewById(R.id.startButton)
+
+        //tu wyzej masz przycisk, to wez go tam podepnij
+
+        startButton.setOnClickListener {
+            startCalibration()
+        }
+
+        return view
+    }
+
+    override fun onResume() {
+        super.onResume()
+        initializeTones()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        releaseAudioTrack()
+    }
+
+    private fun initializeTones() {
+        val toneFrequency = 1000.0
+
+        tone1 = generateTone(toneFrequency)
+        tone2 = generateTone(toneFrequency * 2)
+    }
+
+    private fun generateTone(frequency: Double): ShortArray {
+        val sampleRate = 44100
+        val toneDuration = 1.0 // 1 second
+        val amplitude = 0.5
+        val bufferSize = (sampleRate * toneDuration).toInt()
+        val samples = ShortArray(bufferSize)
+
+        val angularFrequency = 2.0 * Math.PI * frequency / sampleRate
+        for (i in 0 until bufferSize) {
+            val sample = (amplitude * sin(angularFrequency * i)).toInt().toShort()
+            samples[i] = sample
+        }
+
+        return samples
+    }
+
+    private fun startCalibration() {
+        val attributes = AudioAttributes.Builder()
+            .setUsage(AudioAttributes.USAGE_MEDIA)
+            .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
+            .build()
+
+        val format = AudioFormat.Builder()
+            .setSampleRate(44100)
+            .setEncoding(AudioFormat.ENCODING_PCM_16BIT)
+            .setChannelMask(AudioFormat.CHANNEL_OUT_MONO)
+            .build()
+
+        val bufferSize = tone1.size * 2
+        audioTrack = AudioTrack.Builder()
+            .setAudioAttributes(attributes)
+            .setAudioFormat(format)
+            .setBufferSizeInBytes(bufferSize)
+            .setTransferMode(AudioTrack.MODE_STREAM)
+            .build()
+
+        audioTrack?.play()
+
+        // Play alternating tones until button is pressed
+        while (true) {
+            audioTrack?.write(tone1, 0, tone1.size)
+            audioTrack?.write(tone2, 0, tone2.size)
+            if (audioTrack?.playState == AudioTrack.PLAYSTATE_STOPPED) {
+                break
+            }
+        }
+    }
+
+    private fun releaseAudioTrack() {
+        audioTrack?.stop()
+        audioTrack?.release()
+        audioTrack = null
     }
 
     companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment CalibrationFragment.
-         */
-        // TODO: Rename and change types and number of parameters
         @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            CalibrationFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
+        fun newInstance() =
+            CalibrationFragment()
     }
 }
+//zostawilem ci to bo nie wiem czy cos z tym planujesz robic
