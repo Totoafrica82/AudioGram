@@ -11,5 +11,6 @@
     <string name="about_activity_authors">Autorzy:</string>
     <string name="author_rs">Tomasz Syrylo i Igor Domitrz</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="kalibracja_przycisk">Rozpocznij kalibrację</string>
 
 </resources>
