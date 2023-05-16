@@ -1,59 +1,36 @@
 package com.example.audiogram
 
 import android.os.Bundle
-import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.FragmentContainer
-import androidx.fragment.app.viewModels
-import android.view.Menu
-import android.view.MenuItem
+import android.widget.ProgressBar
 import android.widget.SeekBar
+import android.widget.SeekBar.OnSeekBarChangeListener
 import android.widget.TextView
-import com.example.audiogram.databinding.FragmentMainBinding
-
+import androidx.fragment.app.Fragment
 
 class MainFragment : Fragment() {
-    private var _binding: FragmentMainBinding? = null
-    private val binding get() = _binding!!
+    private var textView: TextView? = null
+    private var progressBar: ProgressBar? = null
+    private var seekBar: SeekBar? = null
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        _binding = FragmentMainBinding.inflate(inflater, container, false)
-        return binding.root
-    }
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        val view = inflater.inflate(R.layout.fragment_main, container, false)
+        textView = view.findViewById(R.id.textView1)
+        progressBar = view.findViewById(R.id.progressBar)
+        seekBar = view.findViewById(R.id.seekBar)
 
-}
-
-class FragmentActivity : AppCompatActivity() {
-
-    private lateinit var ageSlider: SeekBar
-    private lateinit var ageText: TextView
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        val binding = FragmentMainBinding.inflate(layoutInflater)
-        setContentView(binding.root)
-
-        ageSlider = findViewById(R.id.age_slider)
-        ageText = findViewById(R.id.age_text)
-
-        ageSlider.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
+        seekBar?.setOnSeekBarChangeListener(object : OnSeekBarChangeListener {
             override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
-                ageText.text = progress.toString()
+                progressBar?.progress = progress
+                textView?.text = "$progress"
             }
-            // nie działa zmiana wieku
-            override fun onStartTrackingTouch(seekBar: SeekBar) {}
 
+            override fun onStartTrackingTouch(seekBar: SeekBar) {}
             override fun onStopTrackingTouch(seekBar: SeekBar) {}
         })
 
+        return view
     }
 }
