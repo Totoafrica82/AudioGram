@@ -9,6 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import kotlin.math.pow
 import kotlin.math.sin
 
 class CalibrationFragment : Fragment() {
@@ -43,23 +44,23 @@ class CalibrationFragment : Fragment() {
     }
 
     private fun initializeTones() {
-        val toneFrequency = 1000.0
-
-        tone1 = generateTone(toneFrequency)
-        tone2 = generateTone(toneFrequency * 2)
+        val amplitude = 1.0
+        val zmiana = 10.0.pow(0.25)
+        tone1 = generateTone(amplitude)
+        tone2 = generateTone(amplitude * zmiana)
     }
 
-    private fun generateTone(frequency: Double): ShortArray {
+    private fun generateTone(amplitude: Double): ShortArray {
+        val frequency = 1000.0
         val sampleRate = 44100
         val toneDuration = 1.0 // 1 second
-        val amplitude = 0.5
         val bufferSize = (sampleRate * toneDuration).toInt()
         val samples = ShortArray(bufferSize)
 
         val angularFrequency = 2.0 * Math.PI * frequency / sampleRate
         for (i in 0 until bufferSize) {
-            val sample = (amplitude * sin(angularFrequency * i)).toInt().toShort()
-            samples[i] = sample
+            val sample = amplitude*(frequency * sin(angularFrequency * i)).toInt().toShort()
+            samples[i] = sample.toInt().toShort()
         }
 
         return samples
@@ -77,7 +78,7 @@ class CalibrationFragment : Fragment() {
             .setChannelMask(AudioFormat.CHANNEL_OUT_MONO)
             .build()
 
-        val bufferSize = tone1.size * 2
+        val bufferSize = tone1.size*2
         audioTrack = AudioTrack.Builder()
             .setAudioAttributes(attributes)
             .setAudioFormat(format)
@@ -87,10 +88,16 @@ class CalibrationFragment : Fragment() {
 
         audioTrack?.play()
 
-        // Play alternating tones until button is pressed
         while (true) {
-            audioTrack?.write(tone1, 0, tone1.size)
-            audioTrack?.write(tone2, 0, tone2.size)
+                for (i in 1..32767) {
+                    if (i % 2 == 0) {
+                        Thread.sleep(1000)
+                        audioTrack?.write(tone1, 0, tone1.size)
+                    } else {
+                        Thread.sleep(1000)
+                        audioTrack?.write(tone2, 0, tone2.size)
+                    }
+                }
             if (audioTrack?.playState == AudioTrack.PLAYSTATE_STOPPED) {
                 break
             }
