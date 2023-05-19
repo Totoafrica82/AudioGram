@@ -20,6 +20,14 @@ android:padding="16dp">
         app:layout_constraintTop_toTopOf="parent">
 
         <TextView
+            android:id="@+id/textView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Prosze podaj swoj wiek"
+            android:textSize="20sp"
+            android:gravity="center"/>
+
+        <TextView
             android:id="@+id/textView1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

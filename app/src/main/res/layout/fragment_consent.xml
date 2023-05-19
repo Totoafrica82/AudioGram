@@ -5,10 +5,11 @@
     android:layout_height="match_parent"
     tools:context=".ConsentFragment">
 
-    <!-- TODO: Update blank fragment layout -->
+
     <TextView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:text="Na początku transmisji częśi netowa odpowiezialna za komunikowaie się między użądzeniami jest większa podczas gdy w puźniej urztkowicza część jest większa , ponieważ następuje przesłanie danych do użytkownika a pakity komunikacjne są już odebrane , po pewnym czasię następuję resendowanie co powoduje kolejny wszrost ruchu Net . Na początku przesłania ramek ramki są z ograniczoną ilością błędów lub bezbłędne jednak im dłużej trwa przesyłanie tym większa szansa że nastąpi całkowity błąd przesyłania ramki . W im większa przepustowść tym mniejsza szansa że ramki będą odrzucane , odrzucenie ramki jest traktowane jako błąd transmisji mimo że nie jest błędem algorytmu . Dzięki redundancji pomimo istnienia błędnych ramek informacjię mogą być przyłane bezbłędnie.Akceptując to sprzedajesz swoją dusze."
+        android:textSize="20dp"/>
 
 </FrameLayout>

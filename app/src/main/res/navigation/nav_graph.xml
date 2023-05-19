@@ -12,6 +12,9 @@
         <action
             android:id="@+id/action_homeFragment_to_mainFragment"
             app:destination="@id/mainFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_consentFragment"
+            app:destination="@id/consentFragment" />
     </fragment>
     <fragment
         android:id="@+id/calibrationFragment"
@@ -30,6 +33,9 @@
         <action
             android:id="@+id/action_mainFragment_to_calibrationFragment"
             app:destination="@id/calibrationFragment" />
+        <action
+            android:id="@+id/action_mainFragment_to_homeFragment"
+            app:destination="@id/homeFragment" />
     </fragment>
     <fragment
         android:id="@+id/consentFragment"
@@ -41,4 +47,9 @@
         android:name="com.example.audiogram.calibrationYoungFragment"
         android:label="fragment_calibration_young"
         tools:layout="@layout/fragment_calibration_young" />
+    <fragment
+        android:id="@+id/examinationFragment"
+        android:name="com.example.audiogram.ExaminationFragment"
+        android:label="fragment_examination"
+        tools:layout="@layout/fragment_examination" />
 </navigation>

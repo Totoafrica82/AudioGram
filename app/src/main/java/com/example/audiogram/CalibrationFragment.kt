@@ -103,10 +103,5 @@ class CalibrationFragment : Fragment() {
         audioTrack = null
     }
 
-    companion object {
-        @JvmStatic
-        fun newInstance() =
-            CalibrationFragment()
-    }
+
 }
-//zostawilem ci to bo nie wiem czy cos z tym planujesz robic
