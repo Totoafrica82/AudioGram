@@ -40,7 +40,7 @@ class MainFragment : Fragment() {
         var buttonMain = getView()?.findViewById<Button>(R.id.button_main)
         if (buttonMain != null) {
             buttonMain.setOnClickListener{
-                Navigation.findNavController(view).navigate(R.id.action_mainFragment_to_calibrationFragment)
+                Navigation.findNavController(view).navigate(R.id.action_mainFragment_to_choiceFragment)
             }
         }
     }

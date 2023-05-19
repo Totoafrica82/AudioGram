@@ -10,7 +10,8 @@
     <string name="about_activity_version">Wersja 1.1</string>
     <string name="about_activity_authors">Autorzy:</string>
     <string name="author_rs">Tomasz Syrylo i Igor Domitrz</string>
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="start">Start</string>
+    <string name="calibration">Kalibracja</string>
     <string name="kalibracja_przycisk">Rozpocznij kalibrację</string>
     <string name="button_click">Naciśnij gdy usłyszysz dźwięk</string>
 
