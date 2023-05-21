@@ -50,6 +50,9 @@
         <action
             android:id="@+id/action_examinationFragment_to_choiceFragment"
             app:destination="@id/choiceFragment" />
+        <action
+            android:id="@+id/action_examinationFragment_to_analyticsFragment"
+            app:destination="@id/analyticsFragment" />
     </fragment>
     <fragment
         android:id="@+id/choiceFragment"
@@ -64,5 +67,14 @@
         <action
             android:id="@+id/action_choiceFragment_to_examinationFragment"
             app:destination="@id/examinationFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/analyticsFragment"
+        android:name="com.example.audiogram.AnalyticsFragment"
+        android:label="fragment_analytics"
+        tools:layout="@layout/fragment_analytics" >
+        <action
+            android:id="@+id/action_analyticsFragment_to_choiceFragment"
+            app:destination="@id/choiceFragment" />
     </fragment>
 </navigation>

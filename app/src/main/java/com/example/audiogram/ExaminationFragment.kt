@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import androidx.navigation.Navigation
 import kotlin.math.pow
 import kotlin.math.sin
 
@@ -102,6 +103,13 @@ class ExaminationFragment : Fragment() {
                 rightEarAmplitudeLevels
             )
             dataListener.onDataReceived(leftEarAmplitudeLevels, rightEarAmplitudeLevels)
+        }
+
+        if (endButton != null) {
+            endButton.setOnClickListener {
+                Navigation.findNavController(view)
+                    .navigate(R.id.action_examinationFragment_to_analyticsFragment)
+            }
         }
 
         return view
