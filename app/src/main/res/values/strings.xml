@@ -14,5 +14,12 @@
     <string name="calibration">Kalibracja</string>
     <string name="kalibracja_przycisk">Rozpocznij kalibrację</string>
     <string name="button_click">Naciśnij gdy usłyszysz dźwięk</string>
+    <string name="noHear">Naciśnij, gdy nie słyszysz dźwięku</string>
+    <string name="pomiarButton">Rozpocznij pomiary</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="endPomiarButton">Zakończ pomiar</string>
+    <string name="stopKalibracjiButton">zakończ kalibrację</string>
+    <string name="calibrationMessage">Czas do końca kalibracji:</string>
 
 </resources>

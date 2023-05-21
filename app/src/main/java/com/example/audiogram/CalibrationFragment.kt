@@ -4,11 +4,14 @@ import android.media.AudioAttributes
 import android.media.AudioFormat
 import android.media.AudioTrack
 import android.os.Bundle
+import android.os.CountDownTimer
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.TextView
+import androidx.navigation.fragment.findNavController
 import kotlin.math.pow
 import kotlin.math.sin
 
@@ -16,6 +19,8 @@ class CalibrationFragment : Fragment() {
     private lateinit var tone1: ShortArray
     private lateinit var tone2: ShortArray
     private var audioTrack: AudioTrack? = null
+    private lateinit var calibrationMessage: TextView
+    private lateinit var calibrationTimer: TextView
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -23,11 +28,19 @@ class CalibrationFragment : Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.fragment_calibration, container, false)
         val startButton: Button = view.findViewById(R.id.startButton)
-
-        //tu wyzej masz przycisk, to wez go tam podepnij
+        val exitButton: Button = view.findViewById(R.id.stopButton)
+        calibrationMessage = view.findViewById(R.id.calibrationMessage)
+        calibrationTimer = view.findViewById(R.id.calibrationTimer)
 
         startButton.setOnClickListener {
             startCalibration()
+            startButton.isEnabled = false
+            calibrationMessage.visibility = View.VISIBLE
+            calibrationTimer.visibility = View.VISIBLE
+        }
+
+        exitButton.setOnClickListener {
+            findNavController().navigate(R.id.action_calibrationFragment_to_choiceFragment)
         }
 
         return view
@@ -59,7 +72,7 @@ class CalibrationFragment : Fragment() {
 
         val angularFrequency = 2.0 * Math.PI * frequency / sampleRate
         for (i in 0 until bufferSize) {
-            val sample = amplitude*(frequency * sin(angularFrequency * i)).toInt().toShort()
+            val sample = amplitude * (frequency * sin(angularFrequency * i)).toInt().toShort()
             samples[i] = sample.toInt().toShort()
         }
 
@@ -78,7 +91,7 @@ class CalibrationFragment : Fragment() {
             .setChannelMask(AudioFormat.CHANNEL_OUT_MONO)
             .build()
 
-        val bufferSize = tone1.size*2
+        val bufferSize = tone1.size * 2
         audioTrack = AudioTrack.Builder()
             .setAudioAttributes(attributes)
             .setAudioFormat(format)
@@ -86,22 +99,27 @@ class CalibrationFragment : Fragment() {
             .setTransferMode(AudioTrack.MODE_STREAM)
             .build()
 
-        audioTrack?.play()
+        val timer = object : CountDownTimer(30000, 500) {
+            override fun onTick(millisUntilFinished: Long) {
+                val seconds = millisUntilFinished / 1000
+                calibrationTimer.text = seconds.toString()
 
-        while (true) {
-                for (i in 1..32767) {
-                    if (i % 2 == 0) {
-                        Thread.sleep(1000)
-                        audioTrack?.write(tone1, 0, tone1.size)
-                    } else {
-                        Thread.sleep(1000)
-                        audioTrack?.write(tone2, 0, tone2.size)
-                    }
+                if (seconds.toInt() % 2 == 0) {
+                    audioTrack?.write(tone1, 0, tone1.size)
+                } else {
+                    audioTrack?.write(tone2, 0, tone2.size)
                 }
-            if (audioTrack?.playState == AudioTrack.PLAYSTATE_STOPPED) {
-                break
+            }
+
+            override fun onFinish() {
+                calibrationMessage.visibility = View.GONE
+                calibrationTimer.visibility = View.GONE
+                releaseAudioTrack()
             }
         }
+
+        audioTrack?.play()
+        timer.start()
     }
 
     private fun releaseAudioTrack() {
@@ -109,6 +127,4 @@ class CalibrationFragment : Fragment() {
         audioTrack?.release()
         audioTrack = null
     }
-
-
 }
