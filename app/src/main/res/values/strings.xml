@@ -21,5 +21,7 @@
     <string name="endPomiarButton">Zakończ pomiar</string>
     <string name="stopKalibracjiButton">zakończ kalibrację</string>
     <string name="calibrationMessage">Czas do końca kalibracji:</string>
+    <string name="leweUcho">Lewe ucho</string>
+    <string name="praweUcho">Prawe ucho</string>
 
 </resources>

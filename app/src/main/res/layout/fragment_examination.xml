@@ -1,9 +1,13 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:gravity="center">
-
+<androidx.appcompat.widget.LinearLayoutCompat
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center">
     <TextView
         android:id="@+id/earTextView"
         android:layout_width="wrap_content"
@@ -15,13 +19,13 @@
         android:text="@string/pomiarButton" />
 
     <Button
-        android:id="@+id/Button3"
+        android:id="@+id/examinationButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/button_click" />
 
     <Button
-        android:id="@+id/Button4"
+        android:id="@+id/notHearButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/noHear" />
@@ -30,5 +34,5 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/endPomiarButton" />
-
-</LinearLayout>
+</androidx.appcompat.widget.LinearLayoutCompat>
+</FrameLayout>

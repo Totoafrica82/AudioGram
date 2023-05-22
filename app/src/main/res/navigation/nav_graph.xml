@@ -73,6 +73,9 @@
         android:name="com.example.audiogram.AnalyticsFragment"
         android:label="fragment_analytics"
         tools:layout="@layout/fragment_analytics" >
+        <argument
+            android:name="item"
+            app:argType="com.example.audiogram.placeholder.Audiogram"/>
         <action
             android:id="@+id/action_analyticsFragment_to_choiceFragment"
             app:destination="@id/choiceFragment" />

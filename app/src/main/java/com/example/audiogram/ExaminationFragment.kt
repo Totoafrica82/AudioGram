@@ -1,6 +1,5 @@
 package com.example.audiogram
 
-import android.annotation.SuppressLint
 import android.media.*
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -10,11 +9,13 @@ import android.widget.Button
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.navigation.Navigation
+import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
+import com.example.audiogram.placeholder.Audiogram
 import kotlin.math.pow
 import kotlin.math.sin
 
 class ExaminationFragment : Fragment() {
-
     private val frequency: IntArray = intArrayOf(
         125, 500, 1000, 2000,
         3000, 4000, 6000, 8000, 10000
@@ -22,12 +23,6 @@ class ExaminationFragment : Fragment() {
     private val originalAmplitude = 1 // początkowa amplituda dźwięku
 
     private lateinit var audioTrack: AudioTrack
-    private lateinit var dataListener: DataListener
-
-    private var leftEarMode = true // tryb lewego ucha
-    private var tabCounter = 0 // zmienna do iteracji przez tablicę częstotliwości
-    private var amplitude = originalAmplitude // aktualna amplituda dźwięku
-
     private lateinit var earTextView: TextView
     private lateinit var examinationButton: Button
     private lateinit var notHearButton: Button
@@ -36,7 +31,10 @@ class ExaminationFragment : Fragment() {
     private val leftEarAmplitudeLevels: ArrayList<Pair<Int, Int>> = ArrayList()
     private val rightEarAmplitudeLevels: ArrayList<Pair<Int, Int>> = ArrayList()
 
-    @SuppressLint("SetTextI18n")
+    private var leftEarMode = true // tryb lewego ucha
+    private var tabCounter = 0 // zmienna do iteracji przez tablicę częstotliwości
+    private var amplitude = originalAmplitude // aktualna amplituda dźwięku
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -44,8 +42,8 @@ class ExaminationFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_examination, container, false)
 
         earTextView = view.findViewById(R.id.earTextView)
-        examinationButton = view.findViewById(R.id.Button3)
-        notHearButton = view.findViewById(R.id.Button4)
+        examinationButton = view.findViewById(R.id.examinationButton)
+        notHearButton = view.findViewById(R.id.notHearButton)
         endButton = view.findViewById(R.id.endButton)
 
         initializeAudioTrack()
@@ -98,18 +96,20 @@ class ExaminationFragment : Fragment() {
         }
 
         endButton.setOnClickListener {
-            val combinedAmplitudeLevels = combineAmplitudeLevels(
-                leftEarAmplitudeLevels,
-                rightEarAmplitudeLevels
-            )
-            dataListener.onDataReceived(leftEarAmplitudeLevels, rightEarAmplitudeLevels)
-        }
-
-        if (endButton != null) {
-            endButton.setOnClickListener {
-                Navigation.findNavController(view)
-                    .navigate(R.id.action_examinationFragment_to_analyticsFragment)
-            }
+            val data = Audiogram(leftEarAmplitudeLevels, rightEarAmplitudeLevels)
+//            val analyticsFragment = AnalyticsFragment()
+//            analyticsFragment.arguments = Bundle().apply {
+//                putSerializable("leftEarAmplitudeLevels", leftEarAmplitudeLevels)
+//                putSerializable("rightEarAmplitudeLevels", rightEarAmplitudeLevels)
+//            }
+//
+//            val fragmentManager = requireActivity().supportFragmentManager
+//            fragmentManager.beginTransaction()
+//                .replace(R.id.action_examinationFragment_to_analyticsFragment, analyticsFragment)
+//                .commit()
+            findNavController().navigate(ExaminationFragmentDirections.actionExaminationFragmentToAnalyticsFragment(data))
+//            Navigation.findNavController(view)
+//                .navigate(R.id.action_examinationFragment_to_analyticsFragment)
         }
 
         return view
@@ -176,43 +176,8 @@ class ExaminationFragment : Fragment() {
         amplitude = (amplitude * amplificationFactor).toInt() // Zwiększenie amplitudy o 10dB
     }
 
-    private fun combineAmplitudeLevels(
-        leftAmplitudeLevels: ArrayList<Pair<Int, Int>>,
-        rightAmplitudeLevels: ArrayList<Pair<Int, Int>>
-    ): ArrayList<Pair<Pair<Int, Int>, Pair<Int, Int>>> {
-        val combinedAmplitudeLevels: ArrayList<Pair<Pair<Int, Int>, Pair<Int, Int>>> = ArrayList()
-
-        val minSize = minOf(leftAmplitudeLevels.size, rightAmplitudeLevels.size)
-        for (i in 0 until minSize) {
-            val leftAmplitude = leftAmplitudeLevels[i]
-            val rightAmplitude = rightAmplitudeLevels[i]
-            combinedAmplitudeLevels.add(leftAmplitude to rightAmplitude)
-        }
-
-        return combinedAmplitudeLevels
-    }
-
     override fun onDestroyView() {
         super.onDestroyView()
         audioTrack.release()
-    }
-
-    interface DataListener {
-        fun onDataReceived(
-            leftEarAmplitudeLevels: ArrayList<Pair<Int, Int>>,
-            rightEarAmplitudeLevels: ArrayList<Pair<Int, Int>>
-        )
-    }
-
-    fun setDataListener(listener: DataListener) {
-        dataListener = listener
-    }
-
-    companion object {
-        fun newInstance(analyticsFragment: AnalyticsFragment): ExaminationFragment {
-            val fragment = ExaminationFragment()
-            fragment.setDataListener(analyticsFragment)
-            return fragment
-        }
     }
 }
