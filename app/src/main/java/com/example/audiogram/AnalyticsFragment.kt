@@ -1,5 +1,4 @@
 package com.example.audiogram
-
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -35,10 +34,13 @@ class AnalyticsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        Log.v("audiogram1",args.item.leftEarAmplitudeLevels.toString())
-        Log.v("audiogram1",args.item.toString())
-        Log.v("audiogram1",args.item.rightEarAmplitudeLevels.toString())
+        Log.v("audiogram1", args.item.leftEarAmplitudeLevels.toString())
+        Log.v("audiogram1", args.item.toString())
+        Log.v("audiogram1", args.item.rightEarAmplitudeLevels.toString())
         lineChart = binding.lineChart
+
+        leftEarAmplitudeLevels = args.item.leftEarAmplitudeLevels
+        rightEarAmplitudeLevels = args.item.rightEarAmplitudeLevels
 
         drawChart()
     }

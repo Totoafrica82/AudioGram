@@ -23,5 +23,8 @@
     <string name="calibrationMessage">Czas do końca kalibracji:</string>
     <string name="leweUcho">Lewe ucho</string>
     <string name="praweUcho">Prawe ucho</string>
+    <string name="wykres">Wykresy Amplitudowo-Częstotliwościowe dla obu uszu</string>
+    <string name="freq">Częstotliwość</string>
+    <string name="noise">dB</string>
 
 </resources>
