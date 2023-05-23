@@ -20,7 +20,7 @@ class ExaminationFragment : Fragment() {
         125, 500, 1000, 2000,
         3000, 4000, 6000, 8000, 10000
     )
-    private val originalAmplitude = 1 // początkowa amplituda dźwięku
+    private val originalAmplitude = 1.0 // początkowa amplituda dźwięku
 
     private lateinit var audioTrack: AudioTrack
     private lateinit var earTextView: TextView
@@ -28,8 +28,8 @@ class ExaminationFragment : Fragment() {
     private lateinit var notHearButton: Button
     private lateinit var endButton: Button
 
-    private val leftEarAmplitudeLevels: ArrayList<Pair<Int, Int>> = ArrayList()
-    private val rightEarAmplitudeLevels: ArrayList<Pair<Int, Int>> = ArrayList()
+    private val leftEarAmplitudeLevels: ArrayList<Pair<Int, Double>> = ArrayList()
+    private val rightEarAmplitudeLevels: ArrayList<Pair<Int, Double>> = ArrayList()
 
     private var leftEarMode = true // tryb lewego ucha
     private var tabCounter = 0 // zmienna do iteracji przez tablicę częstotliwości
@@ -97,19 +97,8 @@ class ExaminationFragment : Fragment() {
 
         endButton.setOnClickListener {
             val data = Audiogram(leftEarAmplitudeLevels, rightEarAmplitudeLevels)
-//            val analyticsFragment = AnalyticsFragment()
-//            analyticsFragment.arguments = Bundle().apply {
-//                putSerializable("leftEarAmplitudeLevels", leftEarAmplitudeLevels)
-//                putSerializable("rightEarAmplitudeLevels", rightEarAmplitudeLevels)
-//            }
-//
-//            val fragmentManager = requireActivity().supportFragmentManager
-//            fragmentManager.beginTransaction()
-//                .replace(R.id.action_examinationFragment_to_analyticsFragment, analyticsFragment)
-//                .commit()
             findNavController().navigate(ExaminationFragmentDirections.actionExaminationFragmentToAnalyticsFragment(data))
-//            Navigation.findNavController(view)
-//                .navigate(R.id.action_examinationFragment_to_analyticsFragment)
+
         }
 
         return view
@@ -146,7 +135,7 @@ class ExaminationFragment : Fragment() {
 
     private fun generateSound(frequency: Int, leftEarMode: Boolean) {
         val sampleRate = 44100
-        val duration = 2 // Czas trwania dźwięku w sekundach
+        val duration = 2
         val numSamples = duration * sampleRate
         val sample = ShortArray(numSamples)
 
@@ -173,7 +162,7 @@ class ExaminationFragment : Fragment() {
         val amplificationFactor =
             10.0.pow(0.5) // Obliczenie współczynnika wzmacniania
 
-        amplitude = (amplitude * amplificationFactor).toInt() // Zwiększenie amplitudy o 10dB
+        amplitude = (amplitude * amplificationFactor)// Zwiększenie amplitudy o 10dB
     }
 
     override fun onDestroyView() {

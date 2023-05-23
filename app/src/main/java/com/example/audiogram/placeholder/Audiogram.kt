@@ -4,5 +4,5 @@ import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
-data class Audiogram(val leftEarAmplitudeLevels: ArrayList<Pair<Int, Int>>,
-                     val rightEarAmplitudeLevels: ArrayList<Pair<Int, Int>>) : Parcelable
+data class Audiogram(val leftEarAmplitudeLevels: ArrayList<Pair<Int, Double>>,
+                     val rightEarAmplitudeLevels: ArrayList<Pair<Int, Double>>) : Parcelable

@@ -1,4 +1,5 @@
 package com.example.audiogram
+
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -14,6 +15,7 @@ import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet
 import com.github.mikephil.charting.utils.ColorTemplate
+import java.lang.Math.log
 
 class AnalyticsFragment : Fragment() {
 
@@ -21,8 +23,8 @@ class AnalyticsFragment : Fragment() {
     private lateinit var binding: FragmentAnalyticsBinding
     private lateinit var lineChart: LineChart
 
-    private var leftEarAmplitudeLevels: ArrayList<Pair<Int, Int>>? = null
-    private var rightEarAmplitudeLevels: ArrayList<Pair<Int, Int>>? = null
+    private var leftEarAmplitudeLevels: ArrayList<Pair<Int, Double>>? = null
+    private var rightEarAmplitudeLevels: ArrayList<Pair<Int, Double>>? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -39,10 +41,21 @@ class AnalyticsFragment : Fragment() {
         Log.v("audiogram1", args.item.rightEarAmplitudeLevels.toString())
         lineChart = binding.lineChart
 
-        leftEarAmplitudeLevels = args.item.leftEarAmplitudeLevels
-        rightEarAmplitudeLevels = args.item.rightEarAmplitudeLevels
+        leftEarAmplitudeLevels = convertToDecibel(args.item.leftEarAmplitudeLevels)
+        rightEarAmplitudeLevels = convertToDecibel(args.item.rightEarAmplitudeLevels)
 
         drawChart()
+    }
+
+    private fun convertToDecibel(amplitudeLevels: ArrayList<Pair<Int, Double>>): ArrayList<Pair<Int, Double>> {
+        val convertedLevels = ArrayList<Pair<Int, Double>>()
+        for (level in amplitudeLevels) {
+            val frequency = level.first
+            val amplitude = level.second
+            val decibel = -20*log(amplitude)
+            convertedLevels.add(Pair(frequency, decibel))
+        }
+        return convertedLevels
     }
 
     private fun drawChart() {
